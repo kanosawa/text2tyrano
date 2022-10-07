@@ -30,14 +30,3 @@ class KanjiGradeCalculator:
     def get_grade(self, moji: str) -> int:
         grade = self.kanji2grade.get(moji)
         return 8 if grade is None else int(grade)
-
-
-def main():
-    calculator = KanjiGradeCalculator('joyo2010.txt')
-    str_in = '躁鬱'
-    grade = calculator.calculate(str_in)
-    print(grade)
-
-
-if __name__ == '__main__':
-    main()
