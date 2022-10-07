@@ -17,26 +17,26 @@ class ParagraphSeparator:
     # パラグラフを分割する
     def separate(self, paragraph: str) -> List[str]:
         spans = [match.span() for match in re.finditer('。', paragraph)]
-        if self.is_one_sentence(paragraph, spans) or self.is_less_than_max_line_num(paragraph, spans):
+        if self.__is_one_sentence(paragraph, spans) or self.__is_less_than_max_line_num(paragraph, spans):
             return [paragraph]
-        return self.separate_to_two_paragraph(paragraph, spans)
+        return self.__separate_to_two_paragraph(paragraph, spans)
 
     # 一行かどうか
-    def is_one_sentence(self, paragraph: str, spans: List[Tuple[int, int]]) -> bool:
+    def __is_one_sentence(self, paragraph: str, spans: List[Tuple[int, int]]) -> bool:
         return len(spans) == 0 or spans[0][1] == len(paragraph)
 
     # 最大行数以内か
-    def is_less_than_max_line_num(self, paragraph: str, spans: List[Tuple[int, int]]) -> bool:
-        return self.calc_line_num(paragraph, spans) <= self.max_line_num
+    def __is_less_than_max_line_num(self, paragraph: str, spans: List[Tuple[int, int]]) -> bool:
+        return self.__calc_line_num(paragraph, spans) <= self.max_line_num
 
     # 段落をできるだけ均等になるように二分割する
-    def separate_to_two_paragraph(self, paragraph: str, spans: List[Tuple[int, int]]) -> List[str]:
+    def __separate_to_two_paragraph(self, paragraph: str, spans: List[Tuple[int, int]]) -> List[str]:
         distances_from_center = list(map(lambda x: abs(x[1] - len(paragraph) / 2), spans))
         separate_pos = spans[np.argmin(distances_from_center)][1]
         return [paragraph[:separate_pos], paragraph[separate_pos:]]
 
     # 段落の表示に必要な行数を算出
-    def calc_line_num(self, paragraph: str, spans: List[Tuple[int, int]]) -> int:
+    def __calc_line_num(self, paragraph: str, spans: List[Tuple[int, int]]) -> int:
         line_num = 0
         prev_pos = 0
         for span in spans:

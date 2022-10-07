@@ -17,6 +17,7 @@ class KanjiGradeCalculator:
                 grade = line[3:].split()[1].replace('S', '')
                 self.kanji2grade[kanji] = grade
 
+    # グレードを算出する
     def calculate(self, str_in: str) -> int:
         converted_list = self.kks.convert(str_in)
         max_grade = 0
@@ -24,10 +25,10 @@ class KanjiGradeCalculator:
             morpheme = converted['orig']
             for moji in morpheme:
                 if regex.match('^\p{Script=Han}+$', moji) is not None:
-                    max_grade = max(max_grade, self.get_grade(moji))
+                    max_grade = max(max_grade, self.__get_grade(moji))
         return max_grade
 
     # 入力された一文字の漢字のグレードを返す
-    def get_grade(self, moji: str) -> int:
+    def __get_grade(self, moji: str) -> int:
         grade = self.kanji2grade.get(moji)
         return 8 if grade is None else int(grade)
