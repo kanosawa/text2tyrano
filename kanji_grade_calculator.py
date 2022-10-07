@@ -4,7 +4,7 @@ import regex
 
 # 漢字のグレード（習う学年）を算出するクラス
 #
-# 小学校で習う漢字は1～6、中学校以降で習う漢字は7、常用外漢字は8を返す
+# ひらがなカタカナは0, 小学校で習う漢字は1～6、中学校以降で習う漢字は7、常用外漢字は8を返す
 # 複数の漢字を含む文字列が入力された場合は、最大グレードを返す
 class KanjiGradeCalculator:
     def __init__(self, joyo_path: str):
@@ -27,6 +27,7 @@ class KanjiGradeCalculator:
                     max_grade = max(max_grade, self.get_grade(moji))
         return max_grade
 
+    # 入力された一文字の漢字のグレードを返す
     def get_grade(self, moji: str) -> int:
         grade = self.kanji2grade.get(moji)
         return 8 if grade is None else int(grade)
