@@ -27,6 +27,16 @@ class LineBreakerTestCase(unittest.TestCase):
         expected = ['今まではお姉ちゃんとか、', '子どもの先生なんてからかわれて呼ばれていたから、', '初めて名前を憶えられたということが、すっごく嬉しかった']
         self.assertEqual(line_breaker.break_line(paragraph), expected)
 
+    def test_two_short_paragraph(self):
+        paragraph = 'こんにちは。さようなら'
+        expected = ['こんにちは。さようなら']
+        self.assertEqual(line_breaker.break_line(paragraph), expected)
+
+    def test_question_paragraph(self):
+        paragraph = '子どもの先生なんてからかわれて呼ばれていたから？　初めて名前を憶えられたということが。すっごく嬉しかった。'
+        expected = ['子どもの先生なんてからかわれて呼ばれていたから？', '　初めて名前を憶えられたということが。', 'すっごく嬉しかった。']
+        self.assertEqual(line_breaker.break_line(paragraph), expected)
+
 
 if __name__ == '__main__':
     unittest.main()
