@@ -15,7 +15,8 @@ class LineBreaker:
     # 改行する
     def break_line(self, paragraph: str) -> List[str]:
         result_lines = self.separate_by_period_exclamation_question(paragraph)
-        while True:
+
+        while len(result_lines) > 0:
 
             longest_sentense_idx = result_lines.index(max(result_lines, key=len))
             max_sentense_length = len(result_lines[longest_sentense_idx])
@@ -91,3 +92,18 @@ class LineBreaker:
             return line
 
         return [make_separated_line(0, half_nearest_idx + 1), make_separated_line(half_nearest_idx + 1, len(converted_list))]
+
+
+def main():
+    line_Braker = LineBreaker(3, 32)
+    paragraph = '今まではお姉ちゃんとか、子どもの先生なんてからかわれて呼ばれていたから、初めて名前を憶えられたということが、すっごく嬉しかった。'
+    result = line_Braker.break_line(paragraph)
+    print("\n変換前")
+    print(paragraph)
+    print("\n変換後")
+    for r in result:
+        print(r)
+
+
+if __name__ == '__main__':
+    main()
