@@ -28,9 +28,7 @@ def main():
 
                 # 発言者
                 if readed_line[0] == '#':
-                    if first_flag:
-                        first_flag = False
-                    else:
+                    if not first_flag:
                         fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n')
                     charaname, readed_line = charaname_dialogue_separator.separate(readed_line)
                     fw.write(charaname + '\n')
@@ -39,6 +37,9 @@ def main():
                 elif last_bracket_flag:
                     fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n#\n')
                     last_bracket_flag = False
+
+                if first_flag:
+                    first_flag = False
 
                 if readed_line[0] == '　':
                     readed_line = readed_line[1:]
