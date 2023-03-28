@@ -32,11 +32,10 @@ def main():
                         fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n')
                     charaname, readed_line = charaname_dialogue_separator.separate(readed_line)
                     fw.write(charaname + '\n')
-                    last_bracket_flag = False
                 # 台詞の次の行で、かつ台詞じゃない場合は地の文の開始
                 elif last_bracket_flag:
                     fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n#\n')
-                    last_bracket_flag = False
+                last_bracket_flag = False
 
                 if first_flag:
                     first_flag = False
