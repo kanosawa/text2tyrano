@@ -20,6 +20,7 @@ def main():
             last_bracket_flag = False
             first_flag = True
             for readed_line in readed_lines:
+                dialog_flag = False
                 readed_line = readed_line.replace('\n', '')
 
                 # 改行のみの行を飛ばす
@@ -32,6 +33,7 @@ def main():
                         fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n')
                     charaname, readed_line = charaname_dialogue_separator.separate(readed_line)
                     fw.write(charaname + '\n')
+                    dialog_flag = True
                 # 台詞の次の行で、かつ台詞じゃない場合は地の文の開始
                 elif last_bracket_flag:
                     fw.write('[_tb_end_text]\n\n[tb_start_text mode=4]\n#\n')
@@ -48,6 +50,8 @@ def main():
                     breaked_lines = line_breaker.break_line(paragraph)
                     for i, breaked_line in enumerate(breaked_lines):
                         break_symbol = '[p]\n' if i == len(breaked_lines) - 1 else '[r]\n'
+                        if dialog_flag and i > 0:
+                            breaked_line = '_　' + breaked_line
                         fw.write(breaked_line + break_symbol)
                     if breaked_line[-1] == '」':
                         last_bracket_flag = True

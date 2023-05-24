@@ -47,6 +47,11 @@ class LineBreaker:
         if prev_pos < length:
             sentenses.append(paragraph[prev_pos:])
 
+        # "？」"のようなケースで"」"が分離されてしまうのを防ぐ
+        if len(sentenses) > 0 and sentenses[-1] == '」':
+            sentenses[-2] += '」'
+            del sentenses[-1]
+
         # 前後の行を再結合してもappropriate_max_chara_numより短いなら再結合
         while True:
             out_from_while = True
@@ -67,7 +72,7 @@ class LineBreaker:
     # 処理後の２文ができるだけ同じ長さになるよう"読点"で改行する
     def break_by_comma(self, sentense: str) -> List[str]:
         spans = [match.span() for match in re.finditer('、', sentense)]
-        if len(spans) == 0:
+        if len(spans) == 0 or spans[0][1] == len(sentense):
             return []
         half_nearest_idx = spans.index(min(spans, key=lambda x: abs(len(sentense) / 2 - x[1])))
         break_pos = spans[half_nearest_idx][1]
