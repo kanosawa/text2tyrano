@@ -88,8 +88,15 @@ class LineBreaker:
 
     # 処理後の２文ができるだけ同じ長さになるよう"形態素"で改行する
     def break_by_morpheme(self, sentense: str) -> List[str]:
-        converted_list = self.kks.convert(sentense)
-        length_list = list(map(lambda x: len(x['orig']), converted_list))
+        converted_list_ = self.kks.convert(sentense)
+        converted_list = [converted_list_[0]['orig']]
+        for i in range(1, len(converted_list_)):
+            if converted_list_[i]['hira'] == converted_list_[i]['orig'] and len(converted_list_[i]['hira']) <= 2:
+                converted_list[-1] += converted_list_[i]['orig']
+            else:
+                converted_list.append(converted_list_[i]['orig'])
+
+        length_list = list(map(lambda x: len(x), converted_list))
         pos_list = []
         prev_pos = 0
         for length in length_list:
@@ -101,7 +108,7 @@ class LineBreaker:
         def make_separated_line(start, end):
             line = ''
             for morpheme in converted_list[start: end]:
-                line += morpheme['orig']
+                line += morpheme
             return line
 
         return [make_separated_line(0, half_nearest_idx + 1), make_separated_line(half_nearest_idx + 1, len(converted_list))]
