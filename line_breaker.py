@@ -9,6 +9,7 @@ from typing import List
 class LineBreaker:
     def __init__(self, max_line_num, appropriate_max_chara_num):
         self.max_line_num = max_line_num  # 最大行数
+        self.min_comma_separate_rate = 0.2  # コンマで分けられるセンテンスの最小割合
         self.appropriate_max_chara_num = appropriate_max_chara_num  # 一行の適切な最大文字数
         self.kks = pykakasi.kakasi()
 
@@ -76,7 +77,14 @@ class LineBreaker:
             return []
         half_nearest_idx = spans.index(min(spans, key=lambda x: abs(len(sentense) / 2 - x[1])))
         break_pos = spans[half_nearest_idx][1]
-        return [sentense[:break_pos], sentense[break_pos:]]
+
+        separated1, separated2 = sentense[:break_pos], sentense[break_pos:]
+        rate1 = len(separated1) / len(sentense)
+        rate2 = 1 - rate1
+        if rate1 > self.min_comma_separate_rate and rate2 > self.min_comma_separate_rate:
+            return [separated1, separated2]
+        else:
+            return []
 
     # 処理後の２文ができるだけ同じ長さになるよう"形態素"で改行する
     def break_by_morpheme(self, sentense: str) -> List[str]:
